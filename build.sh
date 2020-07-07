@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cc main.c -o sudoku
+clang main.c -o sudoku -Ofast
 
