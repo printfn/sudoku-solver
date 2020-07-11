@@ -60,38 +60,6 @@ static void print_board(const char *board) {
     printf("\n+-----+-----+-----+\n");
 }
 
-static int test_modulo_addition(const char *board, int idx, int plus_location) {
-    if (idx != plus_location
-        && idx + 1 != plus_location
-        && idx - 1 != plus_location
-        && idx + 9 != plus_location
-        && idx - 9 != plus_location)
-        return 0;
-
-    if (board[plus_location] == ' ') return 0;
-    int sum = 0;
-    if (plus_location % 9 != 0) {
-        if (board[plus_location - 1] == ' ') return 0;
-        sum += board[plus_location - 1] - '0';
-    }
-    if (plus_location % 9 != 8) {
-        if (board[plus_location + 1] == ' ') return 0;
-        sum += board[plus_location + 1] - '0';
-    }
-    if (plus_location / 9 != 0) {
-        if (board[plus_location - 9] == ' ') return 0;
-        sum += board[plus_location - 9] - '0';
-    }
-    if (plus_location / 9 != 8) {
-        if (board[plus_location + 9] == ' ') return 0;
-        sum += board[plus_location + 9] - '0';
-    }
-    if ((board[plus_location] - '0') != (sum % 9)) {
-        return 1;
-    }
-    return 0;
-}
-
 // 0 on success, 1 on error
 static int test_digit(const char *board, int idx) {
     int logging = 0;
@@ -171,48 +139,6 @@ static int test_digit(const char *board, int idx) {
         }
     }
 
-    // modulo addition (puzzle 1)
-    // if (test_modulo_addition(board, idx, 0)
-    //     || test_modulo_addition(board, idx, 8)
-    //     || test_modulo_addition(board, idx, 12)
-    //     || test_modulo_addition(board, idx, 14)
-    //     || test_modulo_addition(board, idx, 20)
-    //     || test_modulo_addition(board, idx, 24)
-    //     || test_modulo_addition(board, idx, 28)
-    //     || test_modulo_addition(board, idx, 30)
-    //     || test_modulo_addition(board, idx, 32)
-    //     || test_modulo_addition(board, idx, 34)
-    //     || test_modulo_addition(board, idx, 38)
-    //     || test_modulo_addition(board, idx, 42)
-    //     || test_modulo_addition(board, idx, 46)
-    //     || test_modulo_addition(board, idx, 48)
-    //     || test_modulo_addition(board, idx, 50)
-    //     || test_modulo_addition(board, idx, 52)
-    //     || test_modulo_addition(board, idx, 56)
-    //     || test_modulo_addition(board, idx, 60)
-    //     || test_modulo_addition(board, idx, 66)
-    //     || test_modulo_addition(board, idx, 68)
-    //     || test_modulo_addition(board, idx, 72)
-    //     || test_modulo_addition(board, idx, 80)) {
-    //     return 1;
-    // }
-
-
-    if (test_modulo_addition(board, idx, 0)
-        || test_modulo_addition(board, idx, 6)
-        || test_modulo_addition(board, idx, 8)
-        || test_modulo_addition(board, idx, 27)
-        || test_modulo_addition(board, idx, 30)
-        || test_modulo_addition(board, idx, 34)
-        || test_modulo_addition(board, idx, 46)
-        || test_modulo_addition(board, idx, 50)
-        || test_modulo_addition(board, idx, 53)
-        || test_modulo_addition(board, idx, 72)
-        || test_modulo_addition(board, idx, 74)
-        || test_modulo_addition(board, idx, 80)) {
-        return 1;
-    }
-
     return 0;
 }
 
@@ -255,70 +181,7 @@ static int solve(char *board) {
     return 1;
 }
 
-static int test(void) {
-    if (!test_modulo_addition("123495678457618239689273415214387596365129784798564123831756942542931867976842351", 0, 0)) {
-        return 1;
-    }
-    if (test_modulo_addition("953495678457618239689273415214387596365129784798564123831756942542931867976842351", 0, 0)) {
-        return 1;
-    }
-    if (test_modulo_addition("953495678457618239689273415214387596365129784798564123831756942542931867976842353", 80, 80)) {
-        return 1;
-    }
-    // for (int i = 0; i < 81; ++i) {
-    //     if (example1[i] != ' ') {
-    //         test_digit(example1, i);
-    //     }
-    // }
-    // char temp_board[82];
-    // strcpy(temp_board, example1);
-    // temp_board[2] = '1';
-    // if (test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '2';
-    // if (test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '4';
-    // if (test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '3';
-    // if (!test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '5';
-    // if (!test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '6';
-    // if (!test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '7';
-    // if (!test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '8';
-    // if (!test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = '9';
-    // if (!test_digit(temp_board, 2))
-    //     return 1;
-    // temp_board[2] = ' ';
-    // temp_board[5] = '3';
-    // // invalid board test
-    // if (!test_digit(temp_board, 5))
-    //     return 1;
-    // // (partial) valid board test
-    // if (test_digit(
-    //     "53467891262 195    98    6 "
-    //     "8   6   34  8 3  17   2   6"
-    //     " 6    28    419  5    8  79", 10)) {
-    //     return 1;
-    // }
-    return 0;
-}
-
 // int main(int argc, char *argv[]) {
-//     // if (test()) {
-//     //     fprintf(stderr, "Tests failed\n");
-//     //     return 1;
-//     // }
 //     char board[82];
 //     strcpy(board, puzzle2);
 //     if (solve(board)) {
